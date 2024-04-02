@@ -11,52 +11,52 @@ import { Label } from '@/components/ui/label'
 
 // import { Container } from './styles';
 
-const signInForm = z.object({
+const signUpForm = z.object({
   email: z.string().email(),
 })
 
-type SignInForm = z.infer<typeof signInForm>
+type SignUpForm = z.infer<typeof signUpForm>
 
-const SignIn: React.FC = () => {
+const SignUp: React.FC = () => {
   const {
     register,
     handleSubmit,
     formState: { isSubmitting },
-  } = useForm<SignInForm>({
-    resolver: zodResolver(signInForm),
+  } = useForm<SignUpForm>({
+    resolver: zodResolver(signUpForm),
   })
 
-  async function handleSignIn(data: SignInForm) {
+  async function handleSignUp(data: SignUpForm) {
     console.log(data)
     await new Promise((resolve) => setTimeout(resolve, 2000))
     toast.success('Enviamos um link de autenticação para seu e-mail', {
       action: {
         label: 'Reenviar',
-        onClick: () => handleSignIn(data),
+        onClick: () => handleSignUp(data),
       },
     })
   }
   return (
     <>
-      <Helmet title="Login" />
+      <Helmet title="Cadastro" />
       <div className="p-8">
         <div className="flex w-[358px] flex-col justify-center gap-4">
           <div className="flex flex-col gap-2 text-center">
             <h1 className="text-2xl font-semibold tracking-tight">
-              Acessar painel
+              Criar conta grátis
             </h1>
             <p className="text-sm text-muted-foreground">
-              Acompanhe suas vendas pelo painel do parceiro!
+              Seja um parceiro e comece suas vendas!
             </p>
           </div>
 
-          <form className="space-y-4" onSubmit={handleSubmit(handleSignIn)}>
+          <form className="space-y-4" onSubmit={handleSubmit(handleSignUp)}>
             <div className="space-y-2">
               <Label htmlFor="email">Seu e-mail</Label>
               <Input id="email" type="email" {...register('email')} />
             </div>
             <Button className="w-full" type="submit" disabled={isSubmitting}>
-              Acessar painel
+              Finalizar cadastro
             </Button>
           </form>
         </div>
@@ -65,4 +65,4 @@ const SignIn: React.FC = () => {
   )
 }
 
-export default SignIn
+export default SignUp
