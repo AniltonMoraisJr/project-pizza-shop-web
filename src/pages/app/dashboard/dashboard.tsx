@@ -1,10 +1,12 @@
 import React from 'react'
 import { Helmet } from 'react-helmet-async'
 
-import { DayOrdersAmountCard } from './day-orders-amount-card'
-import { MonthCanceledOrdersAmountCard } from './month-canceled-orders-amount-card'
-import { MonthOrdersAmountCard } from './month-orders-amount-card'
-import { MonthRevenueCard } from './month-revenue-card'
+import { DayOrdersAmountCard } from './components/cards/day-orders-amount-card'
+import { MonthCanceledOrdersAmountCard } from './components/cards/month-canceled-orders-amount-card'
+import { MonthOrdersAmountCard } from './components/cards/month-orders-amount-card'
+import { MonthRevenueCard } from './components/cards/month-revenue-card'
+import { PopularProductsChart } from './components/charts/popular-products-chart'
+import { RevenueChart } from './components/charts/revenue-chart'
 
 // import { Container } from './styles';
 
@@ -20,6 +22,11 @@ const Dashboard: React.FC = () => {
         <MonthOrdersAmountCard />
         <DayOrdersAmountCard />
         <MonthCanceledOrdersAmountCard />
+      </div>
+
+      <div className="grid grid-cols-9 gap-4">
+        <RevenueChart />
+        <PopularProductsChart />
       </div>
     </>
   )
