@@ -1,7 +1,7 @@
 import { formatDistanceToNow } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 import { ArrowRight, Search, X } from 'lucide-react'
-import React from 'react'
+import React, { useState } from 'react'
 
 import { OrderStatus } from '@/components/order-status'
 import { Button } from '@/components/ui/button'
@@ -24,17 +24,18 @@ export interface OrderTableRowProps {
 }
 
 const OrderTableRow: React.FC<OrderTableRowProps> = ({ order }) => {
+  const [isDetailOpen, setIsDetailsOpen] = useState(false)
   return (
     <TableRow>
       <TableCell>
-        <Dialog>
+        <Dialog open={isDetailOpen} onOpenChange={setIsDetailsOpen}>
           <DialogTrigger asChild>
             <Button variant={'outline'} size={'xs'}>
               <Search className="h-3 w-3" />
               <span className="sr-only">Detalhes do pedido</span>
             </Button>
           </DialogTrigger>
-          <OrderDetails />
+          <OrderDetails open={isDetailOpen} orderId={order.orderId} />
         </Dialog>
       </TableCell>
       <TableCell className="font-mono text-xs font-medium">
@@ -51,7 +52,7 @@ const OrderTableRow: React.FC<OrderTableRowProps> = ({ order }) => {
       </TableCell>
       <TableCell className="font-medium">{order.customerName}</TableCell>
       <TableCell className="font-medium">
-        {maskCurrencyDecimal(order.total)}
+        {maskCurrencyDecimal(order.total / 100)}
       </TableCell>
       <TableCell>
         <Button variant={'outline'} size={'xs'}>
