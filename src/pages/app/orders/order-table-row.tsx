@@ -1,8 +1,11 @@
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { formatDistanceToNow } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 import { ArrowRight, Search, X } from 'lucide-react'
 import React, { useState } from 'react'
 
+import { cancelOrder } from '@/api/cancel-order'
+import { GetOrdersResponse } from '@/api/get-orders'
 import { OrderStatus } from '@/components/order-status'
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogTrigger } from '@/components/ui/dialog'
@@ -25,6 +28,33 @@ export interface OrderTableRowProps {
 
 const OrderTableRow: React.FC<OrderTableRowProps> = ({ order }) => {
   const [isDetailOpen, setIsDetailsOpen] = useState(false)
+  const queryClient = useQueryClient()
+
+  const { mutateAsync: cancelOrderFn } = useMutation({
+    mutationFn: cancelOrder,
+    onSuccess: (_, { orderId }) => {
+      const orderListCached = queryClient.getQueriesData<GetOrdersResponse>({
+        queryKey: ['orders'],
+      })
+
+      orderListCached.forEach(([cacheKey, cacheData]) => {
+        if (!cacheData) {
+          return
+        }
+
+        queryClient.setQueryData<GetOrdersResponse>(cacheKey, {
+          ...cacheData,
+          orders: cacheData.orders.map((order) => {
+            if (order.orderId === orderId) {
+              return { ...order, status: 'canceled' }
+            }
+            return order
+          }),
+        })
+      })
+    },
+  })
+
   return (
     <TableRow>
       <TableCell>
@@ -55,13 +85,22 @@ const OrderTableRow: React.FC<OrderTableRowProps> = ({ order }) => {
         {maskCurrencyDecimal(order.total / 100)}
       </TableCell>
       <TableCell>
-        <Button variant={'outline'} size={'xs'}>
+        <Button
+          disabled={['canceled'].includes(order.status)}
+          variant={'outline'}
+          size={'xs'}
+        >
           <ArrowRight className="mr-2 h-3 w-3" />
           Aprovar
         </Button>
       </TableCell>
       <TableCell>
-        <Button variant={'ghost'} size={'xs'}>
+        <Button
+          disabled={!['pending', 'processing'].includes(order.status)}
+          variant={'ghost'}
+          size={'xs'}
+          onClick={() => cancelOrderFn({ orderId: order.orderId })}
+        >
           <X className="mr-2 h-3 w-3" />
           Cancelar
         </Button>
