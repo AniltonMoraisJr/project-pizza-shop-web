@@ -22,6 +22,8 @@ import {
 } from '@/components/ui/table'
 import { maskCurrencyDecimal } from '@/utils/mask'
 
+import { OrderDetailsSkeleton } from './order-details-skeleton'
+
 // import { Container } from './styles';
 
 type OrderDetailsProps = {
@@ -42,7 +44,7 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ orderId, open }) => {
         <DialogTitle>Pedido: {orderId}</DialogTitle>
         <DialogDescription>Detalhes do pedido</DialogDescription>
       </DialogHeader>
-      {order && (
+      {order ? (
         <div className="space-y-6">
           <Table>
             <TableBody>
@@ -124,6 +126,8 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ orderId, open }) => {
             </TableFooter>
           </Table>
         </div>
+      ) : (
+        <OrderDetailsSkeleton />
       )}
     </DialogContent>
   )
