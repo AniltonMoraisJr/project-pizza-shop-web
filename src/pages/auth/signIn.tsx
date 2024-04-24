@@ -1,5 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation } from '@tanstack/react-query'
+import { isAxiosError } from 'axios'
 import React from 'react'
 import { Helmet } from 'react-helmet-async'
 import { useForm } from 'react-hook-form'
@@ -39,13 +40,23 @@ const SignIn: React.FC = () => {
   })
 
   async function handleSignIn(data: SignInForm) {
-    await authenticate({ email: data.email })
-    toast.success('Enviamos um link de autenticação para seu e-mail', {
-      action: {
-        label: 'Reenviar',
-        onClick: () => handleSignIn(data),
-      },
-    })
+    try {
+      await authenticate({ email: data.email })
+      toast.success('Enviamos um link de autenticação para seu e-mail', {
+        action: {
+          label: 'Reenviar',
+          onClick: () => handleSignIn(data),
+        },
+      })
+    } catch (error) {
+      if (isAxiosError(error)) {
+        if (error.response?.status === 401) {
+          toast.error('Erro ao acessar o painel. E-mail não autorizado')
+        } else {
+          toast.error('Erro ao acessar o painel.')
+        }
+      }
+    }
   }
   return (
     <>
