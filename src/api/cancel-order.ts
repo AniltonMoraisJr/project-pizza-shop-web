@@ -1,6 +1,6 @@
 import { api } from '@/lib/axios'
 
-type CancelOrderRequest = {
+export type CancelOrderRequest = {
   orderId: string
 }
 

@@ -1,6 +1,6 @@
 import { api } from '@/lib/axios'
 
-type ApproveOrderRequest = {
+export type ApproveOrderRequest = {
   orderId: string
 }
 

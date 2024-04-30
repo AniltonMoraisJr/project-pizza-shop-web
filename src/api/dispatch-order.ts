@@ -1,9 +1,9 @@
 import { api } from '@/lib/axios'
 
-type DeliverOrderRequest = {
+export type DispatchOrderRequest = {
   orderId: string
 }
 
-export async function dispatchOrder({ orderId }: DeliverOrderRequest) {
+export async function dispatchOrder({ orderId }: DispatchOrderRequest) {
   await api.patch(`/orders/${orderId}/dispatch`)
 }
