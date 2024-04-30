@@ -1,10 +1,10 @@
 import { api } from '@/lib/axios'
 
-type GetOrdersDetailsRequest = {
+export type GetOrdersDetailsRequest = {
   orderId: string
 }
 
-type GetOrdersDetailsResponse = {
+export type GetOrdersDetailsResponse = {
   id: string
   createdAt: string
   status: 'pending' | 'canceled' | 'processing' | 'delivering' | 'delivered'
