@@ -5,7 +5,7 @@ import { RegisterRestaurantRequest } from '../register-restaurant'
 export const registerRestaurantMock = http.post<
   never,
   RegisterRestaurantRequest
->('/authenticate', async ({ request }) => {
+>('/restaurants', async ({ request }) => {
   const { restaurantName } = await request.json()
 
   if (restaurantName === 'Pizza Shop') {

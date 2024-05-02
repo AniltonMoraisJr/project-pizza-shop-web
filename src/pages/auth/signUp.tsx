@@ -39,18 +39,22 @@ const SignUp: React.FC = () => {
   })
 
   async function handleSignUp(data: SignUpForm) {
-    await registerRestaurantFN({
-      email: data.email,
-      managerName: data.managerName,
-      phone: data.phone,
-      restaurantName: data.restaurantName,
-    })
-    toast.success('Restaurante cadastrado com sucesso!', {
-      action: {
-        label: 'Login',
-        onClick: () => navigate(`/sign-in?email=${data.email}`),
-      },
-    })
+    try {
+      await registerRestaurantFN({
+        email: data.email,
+        managerName: data.managerName,
+        phone: data.phone,
+        restaurantName: data.restaurantName,
+      })
+      toast.success('Restaurante cadastrado com sucesso!', {
+        action: {
+          label: 'Login',
+          onClick: () => navigate(`/sign-in?email=${data.email}`),
+        },
+      })
+    } catch (error) {
+      toast.error('Restaurante inválido.')
+    }
   }
   return (
     <>
