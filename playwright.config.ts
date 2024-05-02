@@ -1,4 +1,4 @@
-import { defineConfig, devices } from '@playwright/test'
+import { defineConfig } from '@playwright/test'
 
 /**
  * Read environment variables from file.
@@ -11,6 +11,7 @@ import { defineConfig, devices } from '@playwright/test'
  */
 export default defineConfig({
   testDir: './tests',
+  testMatch: /.*\.e2e-spec\.ts$/,
   /* Run tests in files in parallel */
   fullyParallel: true,
 
